@@ -6,6 +6,8 @@ on:
       - main
       - master
 
+environment: deploy
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
