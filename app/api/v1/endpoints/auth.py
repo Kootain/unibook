@@ -10,7 +10,7 @@ from app.schemas.user import UserCreate, UserLogin, VerifyRequest
 from app.schemas.auth import AuthResponse
 from app.services.email import send_verification_email
 
-router = APIRouter()
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register")
 def register(user_in: UserCreate, background_tasks: BackgroundTasks, session: Session = Depends(get_session)):

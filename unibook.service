@@ -8,7 +8,7 @@ User=root
 # 修改为项目所在的实际路径
 WorkingDirectory=/root/unibook
 # 修改为虚拟环境中的 python 路径 (或者全局 python)
-ExecStart=/root/unibook/.venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8000 --forwarded-allow-ips='*'
+ExecStart=/root/unibook/.venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --forwarded-allow-ips='*'
 # 将日志输出到文件
 StandardOutput=append:/root/unibook/logs/access.log
 StandardError=append:/root/unibook/logs/error.log

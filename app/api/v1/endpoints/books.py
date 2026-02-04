@@ -8,7 +8,7 @@ from app.models.book import Book
 from app.models.user import User
 from app.schemas.book import BookCreate, BookUpdate
 
-router = APIRouter()
+router = APIRouter(prefix="/books", tags=["books"])
 
 @router.get("/", response_model=List[Book])
 def get_books(

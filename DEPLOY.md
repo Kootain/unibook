@@ -32,6 +32,20 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### 1.4 配置环境变量
+复制示例配置文件并修改：
+```bash
+cp .env.example .env
+nano .env
+# 填入 RESEND_API_KEY 等配置
+```
+
+### 1.5 创建日志目录
+确保日志目录存在，否则服务可能无法启动：
+```bash
+mkdir logs
+```
+
 ## 2. 配置 Systemd 服务
 
 使用 Systemd 可以确保应用在后台运行，并能在崩溃或重启后自动启动。
