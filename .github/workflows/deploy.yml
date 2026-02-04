@@ -24,7 +24,7 @@ jobs:
             # 项目在服务器上的部署路径
             PROJECT_DIR="~/unibook"
             # Python 虚拟环境路径 (如果存在)
-            VENV_DIR="$PROJECT_DIR/venv"
+            VENV_DIR="$PROJECT_DIR/.venv"
             # Systemd 服务名称 (建议使用 systemd 管理服务)
             SERVICE_NAME="unibook"
             # ===========================================
@@ -59,7 +59,8 @@ jobs:
               # 备用方案：直接杀死旧进程并启动新进程 (仅供测试使用，不推荐用于生产)
               echo "⚠️ Systemd service not found. Attempting manual restart..."
               pkill -f "uvicorn main:app" || true
-              nohup python -m uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
+              mkdir -p logs
+              nohup python -m uvicorn main:app --host 0.0.0.0 --port 8000 > logs/server.log 2>&1 &
               echo "✅ Manual restart triggered"
             fi
 

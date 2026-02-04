@@ -1,0 +1,5 @@
+# 将 example.com 替换为你的实际域名
+example.com {
+    # 将请求反向代理到本地 FastAPI 服务
+    reverse_proxy 127.0.0.1:8000
+}

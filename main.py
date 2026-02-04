@@ -10,7 +10,7 @@ from models import (
 )
 from auth import get_password_hash, verify_password, create_access_token, get_current_user
 
-app = FastAPI(title="Bespoken API")
+app = FastAPI(title="Unibook API")
 
 # CORS
 app.add_middleware(
