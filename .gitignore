@@ -26,6 +26,8 @@ MANIFEST
 venv/
 env/
 .env
+.env.*
+!.env.example
 .venv/
 ENV/
 env.bak/
@@ -36,6 +38,14 @@ venv.bak/
 *.sqlite
 *.sqlite3
 
+# Testing & Quality
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+.tox/
+.nox/
+
 # Logs
 *.log
 
@@ -44,6 +54,7 @@ venv.bak/
 .idea/
 *.swp
 *.swo
+.trae/
 
 # OS
 .DS_Store
