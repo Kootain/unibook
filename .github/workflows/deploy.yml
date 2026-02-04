@@ -1,0 +1,64 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            # ================= 配置区域 =================
+            # 项目在服务器上的部署路径
+            PROJECT_DIR="~/unibook"
+            # Python 虚拟环境路径 (如果存在)
+            VENV_DIR="$PROJECT_DIR/venv"
+            # Systemd 服务名称 (建议使用 systemd 管理服务)
+            SERVICE_NAME="unibook"
+            # ===========================================
+
+            echo "🚀 Starting deployment..."
+
+            # 1. 进入项目目录
+            if [ ! -d "$PROJECT_DIR" ]; then
+              echo "❌ Directory $PROJECT_DIR does not exist. Please clone the repository first."
+              exit 1
+            fi
+            cd "$PROJECT_DIR"
+
+            # 2. 拉取最新代码
+            echo "📥 Pulling latest code..."
+            git pull origin main || git pull origin master
+
+            # 3. 安装依赖
+            echo "📦 Installing dependencies..."
+            if [ -d "$VENV_DIR" ]; then
+              source "$VENV_DIR/bin/activate"
+            fi
+            pip install -r requirements.txt
+
+            # 4. 重启服务
+            echo "🔄 Restarting service..."
+            # 如果使用 systemd (推荐)
+            if systemctl list-units --full -all | grep -Fq "$SERVICE_NAME.service"; then
+              sudo systemctl restart "$SERVICE_NAME"
+              echo "✅ Service restarted via systemctl"
+            else
+              # 备用方案：直接杀死旧进程并启动新进程 (仅供测试使用，不推荐用于生产)
+              echo "⚠️ Systemd service not found. Attempting manual restart..."
+              pkill -f "uvicorn main:app" || true
+              nohup python -m uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
+              echo "✅ Manual restart triggered"
+            fi
+
+            echo "🎉 Deployment finished!"
