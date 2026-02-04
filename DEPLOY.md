@@ -116,7 +116,45 @@ sudo apt install caddy
 
 ---
 
-## 4. GitHub Secrets 配置
+## 5. 数据库迁移 (Database Migration)
+当你在本地修改了数据库模型后，需要按照以下步骤同步到线上数据库：
+
+### 5.1 本地操作
+1.  **修改模型**：在代码中修改 `app/models/` 下的模型定义。
+2.  **生成迁移脚本**：
+    ```bash
+    alembic revision --autogenerate -m "描述你的修改"
+    ```
+    这会在 `alembic/versions/` 目录下生成一个新的 Python 脚本。
+3.  **提交代码**：将新生成的迁移脚本连同代码修改一起提交到 Git。
+    ```bash
+    git add .
+    git commit -m "update models and add migration"
+    git push
+    ```
+
+### 5.2 线上操作
+1.  **拉取最新代码**：
+    ```bash
+    cd ~/unibook
+    git pull
+    ```
+2.  **执行迁移**：
+    ```bash
+    source .venv/bin/activate
+    alembic upgrade head
+    ```
+    该命令会自动将数据库结构更新到最新版本，且**不会丢失现有数据**。
+
+### 5.3 常用命令速查
+*   `alembic upgrade head`: 升级到最新版本
+*   `alembic downgrade -1`: 回滚上一个版本
+*   `alembic current`: 查看当前数据库版本
+*   `alembic history`: 查看迁移历史
+
+---
+
+## 6. GitHub Secrets 配置
 
 在 GitHub 仓库的 **Settings** -> **Secrets and variables** -> **Actions** 中添加以下 Secrets：
 
