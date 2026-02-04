@@ -13,3 +13,6 @@ class UserLogin(SQLModel):
 class VerifyRequest(SQLModel):
     email: str
     code: str
+
+class ResendCodeRequest(SQLModel):
+    email: str

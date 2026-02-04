@@ -13,6 +13,7 @@ class User(SQLModel, table=True):
     name: Optional[str] = None
     
     is_verified: bool = Field(default=False)
+    is_admin: bool = Field(default=False)
     verification_code: Optional[str] = None
     verification_expires: Optional[datetime.datetime] = None
     

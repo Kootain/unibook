@@ -15,5 +15,14 @@ class Settings:
     # Email (Resend)
     RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
     RESEND_FROM_EMAIL: str = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+    
+    # Admin
+    ADMIN_EMAILS: str = os.getenv("ADMIN_EMAILS", "")
+    
+    @property
+    def admin_email_list(self) -> list[str]:
+        if not self.ADMIN_EMAILS:
+            return []
+        return [email.strip() for email in self.ADMIN_EMAILS.split(",") if email.strip()]
 
 settings = Settings()
