@@ -25,6 +25,9 @@ export interface RegisterRequest {
   email: string;
   password?: string;
 }
+export interface RegisterResponse {
+  message: string;
+}
 
 // POST /auth/verify
 // Used to verify email OTP/Code
@@ -32,6 +35,7 @@ export interface VerifyRequest {
   email: string;
   code: string;
 }
+export type VerifyResponse = AuthResponse;
 
 
 // --- BOOK ENDPOINTS ---

@@ -1,7 +1,10 @@
 import time
 import requests
+import sqlite3
+import os
 
-BASE_URL = "http://localhost:8000"
+BASE_URL = "http://localhost:8000/api/v1"
+DB_PATH = "database.db"
 
 def test_flow():
     email = f"test_{int(time.time())}@example.com"
@@ -17,10 +20,40 @@ def test_flow():
         "name": "Test User"
     })
     assert resp.status_code == 200, resp.text
+    print(f"   Register Response: {resp.json()}")
+
+    # 1.5 Get verification code from DB
+    # Wait a moment for DB write? SQLite is fast but maybe...
+    time.sleep(0.5)
+    
+    if not os.path.exists(DB_PATH):
+        print(f"   Error: Database file {DB_PATH} not found.")
+        return
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT verification_code FROM user WHERE email = ?", (email,))
+    row = cursor.fetchone()
+    conn.close()
+    
+    if not row:
+        print("   Error: User not found in DB or code not generated.")
+        return
+        
+    code = row[0]
+    print(f"   Found verification code in DB: {code}")
+
+    # 1.6 Verify
+    print("1.6. Verifying...")
+    resp = requests.post(f"{BASE_URL}/auth/verify", json={
+        "email": email,
+        "code": code
+    })
+    assert resp.status_code == 200, resp.text
     data = resp.json()
     token = data["token"]
     user_id = data["user"]["id"]
-    print(f"   Success! Token: {token[:20]}...")
+    print(f"   Verified! Token: {token[:20]}...")
 
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -86,7 +119,6 @@ def test_flow():
     print("\n--- ALL TESTS PASSED! ---")
 
 if __name__ == "__main__":
-    # Note: Ensure the server is running before executing this
     try:
         test_flow()
     except Exception as e:
