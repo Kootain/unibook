@@ -15,7 +15,7 @@ app = FastAPI(title="Unibook API")
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origin_regex="https?://.*",  # 允许所有 http/https 来源，支持 credentials
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

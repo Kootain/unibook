@@ -1,5 +1,11 @@
-# 将 example.com 替换为你的实际域名
-example.com {
-    # 将请求反向代理到本地 FastAPI 服务
+# 方式 1: 使用域名访问 (推荐，自动 HTTPS)
+# 将 your-domain.com 替换为你的实际域名
+# your-domain.com {
+#     reverse_proxy 127.0.0.1:8000
+# }
+
+# 方式 2: 使用 IP 直接访问 (HTTP)
+# 如果你还没有域名，可以使用服务器 IP 访问
+:80 {
     reverse_proxy 127.0.0.1:8000
 }
