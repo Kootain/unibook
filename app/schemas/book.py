@@ -1,5 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 from sqlmodel import SQLModel
+from datetime import datetime
 
 class BookRequirement(SQLModel):
     topic: str
@@ -20,13 +21,16 @@ class ChapterContent(SQLModel):
     content: str
     reflection: str
 
-class BookCreate(SQLModel):
+class BookBase(SQLModel):
     title: str
     coverImage: Optional[str] = None
     requirements: Optional[BookRequirement] = None
     outline: List[ChapterOutline] = []
     chapters: List[ChapterContent] = []
     status: str = "draft"
+
+class BookCreate(BookBase):
+    pass
 
 class BookUpdate(SQLModel):
     title: Optional[str] = None
@@ -35,3 +39,14 @@ class BookUpdate(SQLModel):
     outline: List[ChapterOutline] = None
     chapters: List[ChapterContent] = None
     status: Optional[str] = None
+
+class UserSummary(SQLModel):
+    id: str
+    email: str
+    name: Optional[str] = None
+
+class BookResponse(BookBase):
+    id: str
+    user_id: str
+    createdAt: float
+    user: Optional[UserSummary] = None

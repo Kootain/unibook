@@ -6,6 +6,7 @@ from app.core.database import get_session
 from app.core.security import get_current_user
 from app.models.user import User
 from app.models.book import Book
+from app.schemas.book import BookResponse
 from app.services.book_service import BookService
 
 router = APIRouter(prefix="/books", tags=["admin-books"])
@@ -18,7 +19,7 @@ def get_current_admin(current_user: User = Depends(get_current_user)):
         )
     return current_user
 
-@router.get("/", response_model=List[Book])
+@router.get("/", response_model=List[BookResponse])
 def list_all_books(
     skip: int = 0,
     limit: int = 100,
