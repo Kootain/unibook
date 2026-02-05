@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
+from sqlalchemy.orm import selectinload
 
 from app.models.book import Book
 from app.models.user import User
@@ -19,7 +20,8 @@ class BookService:
 
     def get_all_books(self, skip: int = 0, limit: int = 100) -> List[Book]:
         # Admin method to get all books
-        statement = select(Book).offset(skip).limit(limit)
+        # Using relationship loading
+        statement = select(Book).options(selectinload(Book.user)).offset(skip).limit(limit)
         return self.session.exec(statement).all()
 
     def create_book(self, book_in: BookCreate, user_id: str) -> Book:

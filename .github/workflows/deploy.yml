@@ -6,7 +6,6 @@ on:
       - main
       - master
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,7 +21,7 @@ jobs:
           script: |
             # ================= 配置区域 =================
             # 项目在服务器上的部署路径
-            PROJECT_DIR="~/unibook"
+            PROJECT_DIR="/root/unibook"
             # Python 虚拟环境路径 (如果存在)
             VENV_DIR="$PROJECT_DIR/.venv"
             # Systemd 服务名称 (建议使用 systemd 管理服务)
