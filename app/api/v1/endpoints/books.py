@@ -32,9 +32,9 @@ def get_book(
     if not book:
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Book not found")
-    if book.user_id != current_user.id:
-        from fastapi import HTTPException
-        raise HTTPException(status_code=403, detail="Not authorized to access this book")
+    # if book.user_id != current_user.id:
+        # from fastapi import HTTPException
+        # raise HTTPException(status_code=403, detail="Not authorized to access this book")
     return book
 
 @router.post("/", response_model=Book)
