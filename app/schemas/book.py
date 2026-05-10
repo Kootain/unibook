@@ -7,7 +7,7 @@ class BookRequirement(SQLModel):
     targetAudience: str
     tone: str
     keyGoals: List[str]
-    pageCountEstimate: int
+    pageCountEstimate: Optional[int]
 
 class ChapterOutline(SQLModel):
     chapterNumber: int

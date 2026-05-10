@@ -11,12 +11,14 @@ from app.services.user_service import UserService
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register")
+@router.post("/register/")
 def register(user_in: UserCreate, background_tasks: BackgroundTasks, session: Session = Depends(get_session)):
     user_service = UserService(session)
     user_service.create_user(user_in, background_tasks)
     return {"message": "Registration successful. Please check your email for verification code."}
 
 @router.post("/verify", response_model=AuthResponse)
+@router.post("/verify/", response_model=AuthResponse)
 def verify(request: VerifyRequest, session: Session = Depends(get_session)):
     user_service = UserService(session)
     user = user_service.verify_user(request.email, request.code)
@@ -24,11 +26,13 @@ def verify(request: VerifyRequest, session: Session = Depends(get_session)):
     return AuthResponse(token=access_token, user=user)
 
 @router.post("/resend-code")
+@router.post("/resend-code/")
 def resend_code(request: ResendCodeRequest, background_tasks: BackgroundTasks, session: Session = Depends(get_session)):
     user_service = UserService(session)
     return user_service.resend_verification_code(request.email, background_tasks)
 
 @router.post("/login", response_model=AuthResponse)
+@router.post("/login/", response_model=AuthResponse)
 def login(user_in: UserLogin, session: Session = Depends(get_session)):
     user_service = UserService(session)
     statement = select(User).where(User.email == user_in.email)
