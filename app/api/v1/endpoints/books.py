@@ -20,6 +20,7 @@ def get_books(
     return book_service.get_user_books(current_user.id)
 
 @router.get("/{book_id}", response_model=Book)
+@router.get("/{book_id}/", response_model=Book)
 def get_book(
     book_id: str,
     current_user: User = Depends(get_current_user),
@@ -47,6 +48,7 @@ def create_book(
     return book_service.create_book(book_in, current_user.id)
 
 @router.put("/{book_id}", response_model=Book)
+@router.put("/{book_id}/", response_model=Book)
 def update_book(
     book_id: str,
     book_in: BookUpdate,
@@ -57,6 +59,7 @@ def update_book(
     return book_service.update_book(book_id, book_in, current_user.id)
 
 @router.delete("/{book_id}")
+@router.delete("/{book_id}/")
 def delete_book(
     book_id: str,
     current_user: User = Depends(get_current_user),
